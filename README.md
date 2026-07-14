@@ -48,6 +48,7 @@ The website combines portfolio pages, project case studies, and long-form editor
 - editorial content and case studies written in MDX;
 - route-aware metadata, structured data, sitemap, robots, and RSS feed;
 - frontmatter validation with Zod;
+- responsive WebP variants generated locally at build time;
 - static export deployable with Nginx and Docker;
 - optional Umami analytics configured at build time.
 
@@ -137,7 +138,7 @@ Changing them therefore requires a new build.
 | Command           | Purpose                                                  |
 | ----------------- | -------------------------------------------------------- |
 | `make run`        | Start the development server on port `3008`.             |
-| `make build`      | Generate the static site in `out/`.                      |
+| `make build`      | Generate image variants and the static site in `out/`.   |
 | `make test`       | Run unit and integration tests.                          |
 | `make check-fast` | Run lint, typecheck, tests, and architecture guardrails. |
 | `make check`      | Add the format check and production build.               |

@@ -1,13 +1,17 @@
 import type { NextConfig } from 'next'
 import createMDX from '@next/mdx'
 import { remarkPluginSpecifiers, rehypePluginSpecifiers } from './mdx.config'
+import { responsiveImageConfig } from './config/responsive-images.mjs'
 
 const nextConfig: NextConfig = {
   devIndicators: false,
   output: 'export',
   trailingSlash: true,
   images: {
-    unoptimized: true,
+    loader: 'custom',
+    loaderFile: './lib/responsive-image-loader.ts',
+    deviceSizes: responsiveImageConfig.deviceSizes,
+    imageSizes: responsiveImageConfig.imageSizes,
   },
 }
 
