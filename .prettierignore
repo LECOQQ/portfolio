@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.pnp
+.pnp.*
+
+# Next.js
+.next/
+out/
+
+# Build
+build/
+dist/
+infra/release.json
+
+# Testing
+coverage/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Misc
+.vercel
+AGENTS.md
+pnpm-lock.yaml

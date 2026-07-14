@@ -1,0 +1,8 @@
+name: portfolio
+
+services:
+  portfolio:
+    image: ${PORTFOLIO_IMAGE:-portfolio:local}
+    ports:
+      - '${BIND_ADDRESS:-127.0.0.1}:${DEPLOY_PORT:-3009}:80'
+    restart: unless-stopped

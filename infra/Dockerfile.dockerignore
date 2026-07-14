@@ -1,0 +1,15 @@
+.git
+.gitea
+.next
+.env
+.env.*
+!.env.example
+node_modules
+.pnpm-store
+out
+coverage
+playwright-report
+test-results
+infra/release.json
+*.log
+*.tsbuildinfo

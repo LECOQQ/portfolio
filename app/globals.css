@@ -1,0 +1,55 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@theme {
+  --color-site-background: #202220;
+  --color-site-foreground: #f1f4ef;
+  --color-site-accent: #a6ad78;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-identity: var(--font-montserrat);
+  --font-mono: var(--font-fira-code);
+}
+
+/**
+ * Tailwind Typography only governs vertical rhythm, lists, paragraphs and
+ * tables here. Headings, links, code and blockquotes are fully owned by the
+ * MDX primitives (components/mdx/*), so their --tw-prose-* variables are
+ * intentionally left untouched to avoid styling the same element twice.
+ */
+@utility prose {
+  --tw-prose-body: color-mix(
+    in srgb,
+    var(--color-site-foreground) 72%,
+    transparent
+  );
+  --tw-prose-headings: var(--color-site-foreground);
+  --tw-prose-bold: var(--color-site-foreground);
+  --tw-prose-bullets: color-mix(
+    in srgb,
+    var(--color-site-foreground) 45%,
+    transparent
+  );
+  --tw-prose-counters: color-mix(
+    in srgb,
+    var(--color-site-foreground) 45%,
+    transparent
+  );
+  --tw-prose-hr: color-mix(
+    in srgb,
+    var(--color-site-foreground) 15%,
+    transparent
+  );
+  --tw-prose-td-borders: color-mix(
+    in srgb,
+    var(--color-site-foreground) 15%,
+    transparent
+  );
+  --tw-prose-th-borders: color-mix(
+    in srgb,
+    var(--color-site-foreground) 25%,
+    transparent
+  );
+}
