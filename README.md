@@ -1,8 +1,7 @@
 # 🧭 Quentin Lecoq Portfolio
 
-[![Next.js](https://img.shields.io/badge/next.js-15-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/) [![TypeScript](https://img.shields.io/badge/typescript-5-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![Tailwind CSS](https://img.shields.io/badge/tailwind_css-4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/) ![Status](https://img.shields.io/badge/status-stable-success?style=flat)
+[![Next.js](https://img.shields.io/badge/next.js-15-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/) [![TypeScript](https://img.shields.io/badge/typescript-5-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![Tailwind CSS](https://img.shields.io/badge/tailwind_css-4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/) ![Status](https://img.shields.io/badge/status-stable-success?style=flat) [![Live website](https://img.shields.io/badge/live-quentinlecoq.fr-7c8060)](https://quentinlecoq.fr)
 
-[![Live website](https://img.shields.io/badge/live-quentinlecoq.fr-7c8060)](https://quentinlecoq.fr)
 <p align="center">
   <a href="https://quentinlecoq.fr">
     <img
