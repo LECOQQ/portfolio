@@ -16,10 +16,12 @@ const MUTED_PARTICLE_OPACITY = 0.18
 const MUTED_PARTICLE_FEATHER = 120
 const INTERACTION_PROTECTION_PADDING = 20
 const INTERACTION_PROTECTION_FEATHER = 48
+const MUTED_PARTICLE_SELECTOR = '[data-particle-muted]'
 const PARTICLE_FOREGROUND_SELECTOR =
   'a, button, input, textarea, select, [data-particle-foreground]'
 const SIGNAL_GRID_OPACITY = 0.055
 const SIGNAL_RING_OPACITY = 0.14
+const TARGET_FRAME_INTERVAL = 1000 / 30
 
 function smoothstep(value: number): number {
   const clamped = Math.min(Math.max(value, 0), 1)
@@ -103,20 +105,12 @@ function getInteractionStrength(
   return strength
 }
 
-function getForegroundInteractionStrength(x: number, y: number): number {
-  const foregroundElements = document.querySelectorAll<HTMLElement>(
-    PARTICLE_FOREGROUND_SELECTOR,
-  )
-  let strength = 1
-
-  foregroundElements.forEach((element) => {
-    strength = Math.min(
-      strength,
-      getInteractionStrengthForRect(x, y, element.getBoundingClientRect()),
-    )
-  })
-
-  return strength
+function getForegroundInteractionStrength(
+  x: number,
+  y: number,
+  foregroundRects: DOMRect[],
+): number {
+  return getInteractionStrength(x, y, foregroundRects)
 }
 
 function createPoints(width: number, height: number): Point[] {
@@ -159,13 +153,40 @@ export function ParticleField() {
       active: false,
     }
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)')
     let points: Point[] = []
     let renderedX = new Float32Array()
     let renderedY = new Float32Array()
     let influences = new Float32Array()
+    let mutedRects: DOMRect[] = []
+    let foregroundRects: DOMRect[] = []
+    let mutedRectsDirty = true
+    let foregroundRectsDirty = true
     let animationFrame = 0
+    let lastDrawTime = 0
     let width = 0
     let height = 0
+
+    const shouldAnimate = () =>
+      finePointer.matches &&
+      !reduceMotion.matches &&
+      document.visibilityState === 'visible'
+
+    const refreshMutedRects = () => {
+      mutedRects = Array.from(
+        document.querySelectorAll<HTMLElement>(MUTED_PARTICLE_SELECTOR),
+        (element) => element.getBoundingClientRect(),
+      )
+      mutedRectsDirty = false
+    }
+
+    const refreshForegroundRects = () => {
+      foregroundRects = Array.from(
+        document.querySelectorAll<HTMLElement>(PARTICLE_FOREGROUND_SELECTOR),
+        (element) => element.getBoundingClientRect(),
+      )
+      foregroundRectsDirty = false
+    }
 
     const resize = () => {
       width = window.innerWidth
@@ -184,7 +205,7 @@ export function ParticleField() {
       influences = new Float32Array(points.length)
     }
 
-    const drawSignalField = (time: number) => {
+    const drawSignalField = (time: number, animate: boolean) => {
       if (pointer.strength < 0.01) return
 
       const radius = INFLUENCE_RADIUS * 0.82
@@ -219,7 +240,7 @@ export function ParticleField() {
       context.moveTo(pointer.x + radius * 0.72, pointer.y)
       context.arc(pointer.x, pointer.y, radius * 0.72, 0, Math.PI * 2)
       context.setLineDash([2, 7])
-      context.lineDashOffset = reduceMotion.matches ? 0 : -time * 0.0012
+      context.lineDashOffset = animate ? -time * 0.0012 : 0
       context.lineWidth = 0.6
       context.strokeStyle = `rgba(241, 244, 239, ${
         SIGNAL_RING_OPACITY * pointer.strength
@@ -229,22 +250,40 @@ export function ParticleField() {
     }
 
     const draw = (time = 0) => {
+      animationFrame = 0
+      const animate = shouldAnimate()
+
+      if (
+        animate &&
+        lastDrawTime > 0 &&
+        time - lastDrawTime < TARGET_FRAME_INTERVAL
+      ) {
+        animationFrame = window.requestAnimationFrame(draw)
+        return
+      }
+
+      lastDrawTime = time
+      if (mutedRectsDirty) refreshMutedRects()
+      if (pointer.active && foregroundRectsDirty) refreshForegroundRects()
+
       context.clearRect(0, 0, width, height)
-      const mutedRects = Array.from(
-        document.querySelectorAll<HTMLElement>('[data-particle-muted]'),
-      ).map((element) => element.getBoundingClientRect())
       pointer.x += (pointer.targetX - pointer.x) * 0.18
       pointer.y += (pointer.targetY - pointer.y) * 0.18
-      const targetStrength = pointer.active
-        ? Math.min(
-            getInteractionStrength(
-              pointer.targetX,
-              pointer.targetY,
-              mutedRects,
-            ),
-            getForegroundInteractionStrength(pointer.targetX, pointer.targetY),
-          )
-        : 0
+      const targetStrength =
+        pointer.active && animate
+          ? Math.min(
+              getInteractionStrength(
+                pointer.targetX,
+                pointer.targetY,
+                mutedRects,
+              ),
+              getForegroundInteractionStrength(
+                pointer.targetX,
+                pointer.targetY,
+                foregroundRects,
+              ),
+            )
+          : 0
       pointer.strength +=
         (targetStrength - pointer.strength) *
         (targetStrength > pointer.strength ? 0.09 : 0.12)
@@ -256,22 +295,20 @@ export function ParticleField() {
         const influence =
           Math.max(0, 1 - distance / INFLUENCE_RADIUS) * pointer.strength
         const easedInfluence = influence * influence
-        const drift = reduceMotion.matches
-          ? 0
-          : Math.sin(time * 0.0002 + point.phase) * 0.28
+        const drift = animate ? Math.sin(time * 0.0002 + point.phase) * 0.28 : 0
 
         renderedX[index] = point.x + deltaX * easedInfluence * 0.035
         renderedY[index] = point.y + deltaY * easedInfluence * 0.035 + drift
         influences[index] = easedInfluence
       })
 
-      drawSignalField(time)
+      drawSignalField(time, animate)
 
       points.forEach((point, index) => {
         const influence = influences[index]!
-        const breathing = reduceMotion.matches
-          ? 0
-          : Math.sin(time * 0.00018 + point.phase) * 0.025
+        const breathing = animate
+          ? Math.sin(time * 0.00018 + point.phase) * 0.025
+          : 0
         const radius = point.size + influence * 0.75
         const mutedOpacity = getMutedOpacity(
           renderedX[index]!,
@@ -293,11 +330,24 @@ export function ParticleField() {
         context.fill()
       })
 
-      if (!reduceMotion.matches)
+      if (animate) animationFrame = window.requestAnimationFrame(draw)
+    }
+
+    const scheduleDraw = () => {
+      if (animationFrame === 0 && document.visibilityState === 'visible') {
         animationFrame = window.requestAnimationFrame(draw)
+      }
+    }
+
+    const invalidateParticleRects = () => {
+      mutedRectsDirty = true
+      foregroundRectsDirty = true
+      scheduleDraw()
     }
 
     const handlePointerMove = (event: PointerEvent) => {
+      if (!shouldAnimate()) return
+
       if (pointer.strength === 0) {
         pointer.x = event.clientX
         pointer.y = event.clientY
@@ -313,33 +363,60 @@ export function ParticleField() {
 
     const handleResize = () => {
       resize()
-      if (reduceMotion.matches) draw()
+      lastDrawTime = 0
+      invalidateParticleRects()
     }
 
-    const handleMotionPreference = () => {
+    const handleAnimationPreference = () => {
       window.cancelAnimationFrame(animationFrame)
-      draw()
+      animationFrame = 0
+      lastDrawTime = 0
+      pointer.active = false
+      invalidateParticleRects()
     }
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        window.cancelAnimationFrame(animationFrame)
+        animationFrame = 0
+        return
+      }
+
+      lastDrawTime = 0
+      invalidateParticleRects()
+    }
+
+    const mutationObserver = new MutationObserver(invalidateParticleRects)
 
     resize()
-    draw()
+    scheduleDraw()
     window.addEventListener('resize', handleResize)
+    window.addEventListener('scroll', invalidateParticleRects, {
+      passive: true,
+    })
     window.addEventListener('pointermove', handlePointerMove, { passive: true })
     document.documentElement.addEventListener(
       'pointerleave',
       handlePointerLeave,
     )
-    reduceMotion.addEventListener('change', handleMotionPreference)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    reduceMotion.addEventListener('change', handleAnimationPreference)
+    finePointer.addEventListener('change', handleAnimationPreference)
+    mutationObserver.observe(document.body, { childList: true, subtree: true })
 
     return () => {
       window.cancelAnimationFrame(animationFrame)
       window.removeEventListener('resize', handleResize)
+      window.removeEventListener('scroll', invalidateParticleRects)
       window.removeEventListener('pointermove', handlePointerMove)
       document.documentElement.removeEventListener(
         'pointerleave',
         handlePointerLeave,
       )
-      reduceMotion.removeEventListener('change', handleMotionPreference)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      reduceMotion.removeEventListener('change', handleAnimationPreference)
+      finePointer.removeEventListener('change', handleAnimationPreference)
+      mutationObserver.disconnect()
     }
   }, [])
 

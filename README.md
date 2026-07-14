@@ -1,19 +1,47 @@
----
-title: 'Quentin Lecoq Portfolio'
-description: 'Static portfolio, projects and writing built with Next.js and MDX'
-status: stable
----
-
 # 🧭 Quentin Lecoq Portfolio
 
-[![Next.js](https://img.shields.io/badge/next.js-15-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/) [![TypeScript](https://img.shields.io/badge/typescript-5-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![Tailwind CSS](https://img.shields.io/badge/tailwind_css-4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Next.js](https://img.shields.io/badge/next.js-15-000000?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/) [![TypeScript](https://img.shields.io/badge/typescript-5-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![Tailwind CSS](https://img.shields.io/badge/tailwind_css-4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/) ![Status](https://img.shields.io/badge/status-stable-success?style=flat)
 
-Source code for [quentinlecoq.fr](https://quentinlecoq.fr), a personal
-portfolio bringing together professional experience, projects, and writing in
-a restrained editorial interface.
+[![Live website](https://img.shields.io/badge/live-quentinlecoq.fr-7c8060)](https://quentinlecoq.fr)
+<p align="center">
+  <a href="https://quentinlecoq.fr">
+    <img
+      src="docs/portfolio-preview.webp"
+      alt="Portfolio homepage preview"
+      width="100%"
+      />
+  </a>
+</p>
+
+A statically exported, MDX-powered editorial portfolio and publishing
+platform built with Next.js.
+
+This repository powers [quentinlecoq.fr](https://quentinlecoq.fr), bringing
+together professional experience, projects, and long-form writing in a
+restrained editorial interface.
 
 The site uses the Next.js App Router and produces a fully static export. It
 requires no backend, CMS, or database.
+
+> This GitHub repository is an automatically synchronized public export of
+> the primary private Gitea repository. It contains the curated source code
+> and public content used to build the website.
+
+## 👀 Preview
+
+### Writing and research
+
+<p align="center">
+  <a href="https://quentinlecoq.fr/blog/">
+    <img
+      src="docs/writings-preview.webp"
+      alt="Writing and research preview"
+      width="100%"
+      />
+  </a>
+</p>
+
+The website combines portfolio pages, project case studies, and long-form editorial content managed through MDX.
 
 ## ✨ Features
 
@@ -33,11 +61,46 @@ requires no backend, CMS, or database.
 - Playwright for end-to-end tests;
 - pnpm and Make for project commands.
 
+## 🏗️ Public architecture
+
+```mermaid
+flowchart LR
+  subgraph source["Public source"]
+    routes["app/<br/>Routes and metadata"]
+    features["features/<br/>Application and UI modules"]
+    content["content/<br/>MDX articles and case studies"]
+    shared["components/ · ui/ · lib/<br/>Shared presentation and utilities"]
+    assets["public/<br/>Images, favicons and CV"]
+
+    features --> routes
+    content --> routes
+    shared --> routes
+  end
+
+  subgraph build["Static build"]
+    next["Next.js App Router<br/>MDX pipeline"]
+    export["out/<br/>Static HTML, CSS and JavaScript"]
+
+    next --> export
+    assets --> export
+  end
+
+  subgraph runtime["Public runtime"]
+    nginx["Nginx<br/>Static file server"]
+    browser["Visitor browser"]
+
+    export --> nginx
+    nginx --> browser
+  end
+
+  routes --> next
+```
+
 ## 🧰 Requirements
 
 - Git and Make;
-- Node.js `22.20.0`;
-- pnpm `10.28.0`;
+- Node.js 22, tested with `22.20.0`;
+- pnpm 10, tested with `10.28.0`;
 - Docker with the Compose plugin, only for previewing the production image.
 
 The expected versions are also declared in `.nvmrc`, `package.json`, and the
@@ -100,9 +163,14 @@ interactive islands, and routes under `app/` contain page wiring only.
 
 ## 🤝 Contributing
 
-Issues and contributions are welcome. See
-[`CONTRIBUTING.md`](CONTRIBUTING.md) for setup instructions, project
-conventions, and pull request expectations.
+Issues, suggestions, and pull requests are welcome.
+
+This GitHub repository is a synchronized public mirror. Accepted changes are
+manually integrated into the primary Gitea repository and then republished
+here.
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for setup instructions, project
+conventions, and contribution guidelines.
 
 ## ⚖️ License
 

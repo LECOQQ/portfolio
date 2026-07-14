@@ -47,7 +47,7 @@ export const about: About = {
       'Aujourd’hui, je développe Mesh, projet intrapreneurial chez Safran.',
     ],
     photo: {
-      src: '/images/identity/pro-1.png',
+      src: '/images/identity/pro-1.webp',
       alt: 'Portrait de Quentin Lecoq',
     },
     achievements: [

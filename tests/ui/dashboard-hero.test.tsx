@@ -6,7 +6,10 @@ describe('DashboardHeroCard', () => {
   it('shows the portrait, status and location facts', () => {
     render(<DashboardHeroCard />)
 
-    expect(screen.getByAltText('Portrait de Quentin Lecoq')).toBeInTheDocument()
+    const portrait = screen.getByAltText('Portrait de Quentin Lecoq')
+
+    expect(portrait).toBeInTheDocument()
+    expect(portrait).toHaveAttribute('fetchpriority', 'high')
     expect(screen.getByText("En train d'écrire la suite.")).toBeInTheDocument()
     expect(screen.getByText('France')).toBeInTheDocument()
     expect(screen.getByText('Europe/Paris')).toBeInTheDocument()

@@ -63,6 +63,7 @@ export function DashboardHeroCard() {
           fill
           sizes="(min-width: 1024px) 272px, 60vw"
           className="object-cover saturate-[0.85]"
+          fetchPriority="high"
           priority
         />
       </div>
