@@ -1,7 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { usePathname } from 'next/navigation'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { resumeConfig } from '@/lib/resume-config'
 import { Topbar } from '@/ui/topbar'
 
 vi.mock('next/navigation', () => ({
@@ -70,40 +69,20 @@ describe('Topbar', () => {
     ).toHaveAttribute('aria-expanded', 'false')
   })
 
-  it('shows the resume update date in the tooltip', () => {
+  it('opens the private resume request form', () => {
     render(<Topbar />)
 
-    const tooltip = screen.getByRole('tooltip')
-
-    expect(tooltip).toHaveTextContent(
-      `Mis à jour le ${resumeConfig.updatedAtLabel}`,
-    )
-    expect(tooltip).not.toHaveTextContent('Télécharger mon CV')
-    expect(tooltip).toHaveClass('scale-95')
-    expect(tooltip).toHaveClass('group-hover:scale-100')
-  })
-
-  it('opens the resume menu with download and view options', () => {
-    render(<Topbar />)
-
-    const cvButton = screen.getByRole('button', { name: 'Mon CV' })
+    const cvButton = screen.getByRole('button', {
+      name: 'Demander le CV complet',
+    })
     expect(cvButton).toHaveAttribute('aria-expanded', 'false')
 
     fireEvent.click(cvButton)
     expect(cvButton).toHaveAttribute('aria-expanded', 'true')
-
-    const downloadItem = screen.getByRole('menuitem', { name: 'Télécharger' })
-    expect(downloadItem).toHaveAttribute('href', '/cv/cv_quentin_lecoq.pdf')
-    expect(downloadItem).toHaveAttribute('download', 'cv_quentin_lecoq.pdf')
-    expect(downloadItem).toHaveAttribute(
-      'data-umami-event',
-      'cv-download-click',
-    )
-    expect(downloadItem).toHaveAttribute('data-umami-event-location', 'topbar')
-
-    const viewItem = screen.getByRole('menuitem', { name: 'Consulter' })
-    expect(viewItem).toHaveAttribute('href', '/cv')
-    expect(viewItem).toHaveAttribute('data-umami-event', 'cv-view-click')
-    expect(viewItem).toHaveAttribute('data-umami-event-location', 'topbar')
+    expect(
+      screen.getByRole('dialog', { name: 'Recevoir le CV complet' }),
+    ).toBeInTheDocument()
+    expect(screen.getByLabelText('E-mail de réponse *')).toHaveFocus()
+    expect(screen.queryByRole('link', { name: /Télécharger/i })).toBeNull()
   })
 })

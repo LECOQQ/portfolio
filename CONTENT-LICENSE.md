@@ -17,7 +17,7 @@ It does not apply to the portfolio's original content, including:
 
 - articles, essays, and other editorial writing;
 - project descriptions and case studies;
-- biographical information, professional experience, and résumé content;
+- biographical information and professional profile content;
 - photographs, illustrations, logos, videos, and other media;
 - editorial or biographical material embedded in source code files.
 

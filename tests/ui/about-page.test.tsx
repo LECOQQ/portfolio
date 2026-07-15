@@ -47,6 +47,10 @@ describe('AboutPage', () => {
       }),
     ).toBeInTheDocument()
     expect(screen.getByText('Du système au produit')).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Demander le CV complet' }),
+    ).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /CV complet/i })).toBeNull()
   })
 
   it('renders the skills playground section', () => {

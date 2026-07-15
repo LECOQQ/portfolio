@@ -37,7 +37,6 @@ COPY . .
 RUN pnpm run build
 RUN test -f out/favicon.ico \
   && test -f out/favicons/favicon.svg \
-  && test -f out/cv/cv_quentin_lecoq.pdf \
   && test -f out/robots.txt \
   && test -f out/sitemap.xml
 

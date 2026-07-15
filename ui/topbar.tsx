@@ -1,11 +1,11 @@
 'use client'
 
-import { ChevronDown, ChevronRight, Menu, X } from 'lucide-react'
+import { ChevronRight, Menu, X } from 'lucide-react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState, type FocusEvent } from 'react'
-import { resumeConfig } from '@/lib/resume-config'
+import { ResumeRequestDialog } from '@/features/contact/ui/resume-request-dialog'
 
 const navigationItems = [
   { label: 'Projets', href: '/projects' },
@@ -16,7 +16,6 @@ const navigationItems = [
 
 const linkClassName =
   'relative isolate flex items-center justify-center gap-0.5 rounded-xl py-1.5 font-identity text-xs font-medium transition-colors duration-300 hover:text-site-foreground focus-visible:text-site-foreground focus-visible:ring-2 focus-visible:ring-site-accent/60 focus-visible:outline-none sm:text-sm'
-const resumeTooltipId = 'resume-download-tooltip'
 
 function Highlight() {
   const reduceMotion = useReducedMotion()
@@ -40,9 +39,7 @@ export function Topbar() {
   const currentPath = pathname === '/' ? pathname : pathname.replace(/\/$/, '')
   const [hoveredPath, setHoveredPath] = useState<string | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isCvMenuOpen, setIsCvMenuOpen] = useState(false)
   const navRef = useRef<HTMLElement>(null)
-  const cvMenuRef = useRef<HTMLDivElement>(null)
   const reduceMotion = useReducedMotion()
   const highlightedPath = hoveredPath ?? currentPath
 
@@ -68,29 +65,6 @@ export function Topbar() {
       document.removeEventListener('keydown', handleKeyDown)
     }
   }, [isMenuOpen])
-
-  useEffect(() => {
-    if (!isCvMenuOpen) return
-
-    const handlePointerDown = (event: PointerEvent) => {
-      if (
-        event.target instanceof Node &&
-        !cvMenuRef.current?.contains(event.target)
-      )
-        setIsCvMenuOpen(false)
-    }
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setIsCvMenuOpen(false)
-    }
-
-    document.addEventListener('pointerdown', handlePointerDown)
-    document.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      document.removeEventListener('pointerdown', handlePointerDown)
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [isCvMenuOpen])
 
   const handleBlur = (event: FocusEvent<HTMLElement>) => {
     if (!event.currentTarget.contains(event.relatedTarget)) setHoveredPath(null)
@@ -228,89 +202,10 @@ export function Topbar() {
       </nav>
 
       <div
-        ref={cvMenuRef}
         data-particle-foreground
-        className="group absolute right-[max(1rem,env(safe-area-inset-right))]"
+        className="absolute right-[max(1rem,env(safe-area-inset-right))]"
       >
-        <button
-          type="button"
-          aria-label="Mon CV"
-          aria-describedby={resumeTooltipId}
-          aria-haspopup="menu"
-          aria-expanded={isCvMenuOpen}
-          aria-controls="cv-menu"
-          onClick={() => setIsCvMenuOpen((isOpen) => !isOpen)}
-          className="text-site-foreground/70 hover:text-site-foreground font-identity focus-visible:border-site-accent/40 focus-visible:ring-site-accent/30 flex h-9 cursor-pointer items-center gap-1.5 rounded-[1.1rem] border border-white/7 bg-white/4.5 px-3 text-xs font-medium shadow-[0_12px_36px_rgb(0_0_0/0.16)] backdrop-blur-lg transition-colors duration-300 hover:bg-white/9 focus-visible:ring-2 focus-visible:outline-none sm:text-sm"
-        >
-          <span>CV</span>
-          <ChevronDown
-            aria-hidden="true"
-            className={`text-site-accent/65 group-hover:text-site-accent group-focus-within:text-site-accent transition-transform duration-200 ${isCvMenuOpen ? 'rotate-180' : ''}`}
-            size={15}
-            strokeWidth={1.8}
-          />
-        </button>
-
-        <div
-          id={resumeTooltipId}
-          role="tooltip"
-          className={`bg-site-background/80 pointer-events-none absolute top-[calc(100%+0.6rem)] right-0 w-max max-w-[calc(100vw-2rem)] origin-top-right translate-y-1.5 scale-95 rounded-xl border border-white/7 px-3 py-2 text-right opacity-0 shadow-[0_12px_36px_rgb(0_0_0/0.18)] backdrop-blur-xl transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
-            isCvMenuOpen
-              ? ''
-              : 'group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100'
-          }`}
-        >
-          <p className="font-identity text-site-foreground/50 text-xs tracking-[0.08em] [font-variant-caps:small-caps]">
-            Mis à jour le {resumeConfig.updatedAtLabel}
-          </p>
-        </div>
-
-        <AnimatePresence>
-          {isCvMenuOpen && (
-            <motion.ul
-              id="cv-menu"
-              role="menu"
-              aria-label="Mon CV"
-              className="bg-site-background/95 absolute top-[calc(100%+0.5rem)] right-0 w-44 rounded-[1.1rem] border border-white/[0.07] p-1 shadow-[0_16px_40px_rgb(0_0_0/0.22)] backdrop-blur-xl"
-              initial={
-                reduceMotion ? false : { opacity: 0, y: -6, scale: 0.98 }
-              }
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={
-                reduceMotion
-                  ? { opacity: 0 }
-                  : { opacity: 0, y: -4, scale: 0.98 }
-              }
-              transition={{ duration: reduceMotion ? 0 : 0.2, ease: 'easeOut' }}
-            >
-              <li role="none">
-                <a
-                  role="menuitem"
-                  href="/cv"
-                  onClick={() => setIsCvMenuOpen(false)}
-                  className="text-site-foreground/70 hover:text-site-foreground font-identity focus-visible:ring-site-accent/30 flex cursor-pointer items-center rounded-xl px-3 py-2 text-sm font-medium transition-colors duration-200 hover:bg-white/9 focus-visible:ring-2 focus-visible:outline-none"
-                  data-umami-event="cv-view-click"
-                  data-umami-event-location="topbar"
-                >
-                  Consulter
-                </a>
-              </li>
-              <li role="none">
-                <a
-                  role="menuitem"
-                  href={resumeConfig.href}
-                  download={resumeConfig.filename}
-                  onClick={() => setIsCvMenuOpen(false)}
-                  className="text-site-foreground/70 hover:text-site-foreground font-identity focus-visible:ring-site-accent/30 flex cursor-pointer items-center rounded-xl px-3 py-2 text-sm font-medium transition-colors duration-200 hover:bg-white/9 focus-visible:ring-2 focus-visible:outline-none"
-                  data-umami-event="cv-download-click"
-                  data-umami-event-location="topbar"
-                >
-                  Télécharger
-                </a>
-              </li>
-            </motion.ul>
-          )}
-        </AnimatePresence>
+        <ResumeRequestDialog analyticsLocation="topbar" variant="topbar" />
       </div>
     </header>
   )

@@ -70,7 +70,7 @@ flowchart LR
     features["features/<br/>Application and UI modules"]
     content["content/<br/>MDX articles and case studies"]
     shared["components/ · ui/ · lib/<br/>Shared presentation and utilities"]
-    assets["public/<br/>Images, favicons and CV"]
+    assets["public/<br/>Images and favicons"]
 
     features --> routes
     content --> routes

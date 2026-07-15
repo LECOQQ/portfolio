@@ -72,6 +72,7 @@ export type DashboardIntro = {
   name: DashboardIntroName
   pitch: string
   description: string
+  currentRole: string
   ctas: DashboardIntroCta[]
 }
 
@@ -155,9 +156,11 @@ export const dashboard: Dashboard = {
       lead: 'quentin',
       accent: 'lecoq',
     },
-    pitch: 'Maker par goût. Software par métier. Self-hosted par principe.',
+    pitch: 'Maker par goût. Software de métier. Self-hoster par principe.',
     description:
       "J'aime construire pour comprendre : des prototypes rapides, des systèmes concrets et, lorsque le problème le mérite, de vrais produits.",
+    currentRole:
+      'Je porte aujourd’hui un projet intrapreneurial comme Product & Platform Lead, mêlant stratégie, vision et logiciel pour atteindre le product-market fit.',
     ctas: [
       { label: 'Voir les projets', href: '/projects' },
       { label: 'Lire les écrits', href: '/blog' },

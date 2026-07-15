@@ -159,6 +159,12 @@ def main() -> int:
     """Run architecture and static-export checks and return exit code."""
     violations: list[str] = []
 
+    public_cv_root = FRONT_END_ROOT / "public/cv"
+    if public_cv_root.exists():
+        violations.append(
+            "public/cv [CV assets must not be included in the static export]"
+        )
+
     for file_path in _iter_target_files():
         layer = _detect_layer(file_path)
         if layer is None:
@@ -198,7 +204,10 @@ def main() -> int:
             print(violation)
         return 1
 
-    print("OK: architecture boundaries and static-export constraints hold.")
+    print(
+        "OK: architecture boundaries, static-export constraints and "
+        "private CV boundary hold."
+    )
     return 0
 
 

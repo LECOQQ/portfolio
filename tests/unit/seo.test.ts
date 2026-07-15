@@ -64,7 +64,6 @@ describe('SEO metadata routes', () => {
       'https://quentinlecoq.fr/projects/',
       'https://quentinlecoq.fr/blog/',
       'https://quentinlecoq.fr/contact/',
-      'https://quentinlecoq.fr/cv',
       'https://quentinlecoq.fr/privacy/',
       ...getBlogPosts().map(
         ({ slug }) => `https://quentinlecoq.fr/blog/${slug}/`,

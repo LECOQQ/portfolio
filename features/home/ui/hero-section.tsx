@@ -41,6 +41,9 @@ export function HeroSection() {
         <p className="text-site-foreground/70 mt-3 text-[clamp(0.95rem,1.5vw,1.15rem)] leading-relaxed">
           {intro.description}
         </p>
+        <p className="text-site-foreground/70 mt-2 text-[clamp(0.95rem,1.5vw,1.15rem)] leading-relaxed">
+          {intro.currentRole}
+        </p>
 
         <nav
           aria-label="Raccourcis"

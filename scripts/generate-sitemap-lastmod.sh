@@ -54,7 +54,6 @@ emit_route '/about/' app/about/page.tsx
 emit_route '/projects/' app/projects/page.tsx
 emit_route '/blog/' app/blog/page.tsx
 emit_route '/contact/' app/contact/page.tsx
-emit_route '/cv' lib/resume-config.ts public/cv/cv_quentin_lecoq.pdf
 emit_route '/privacy/' app/privacy/page.tsx content/legal/privacy.mdx
 emit_mdx_routes content/blog /blog
 emit_mdx_routes content/projects /projects

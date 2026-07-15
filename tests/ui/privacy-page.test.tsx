@@ -38,7 +38,16 @@ describe('PrivacyPage', () => {
       screen.getAllByText(/aucun identifiant persistant/).length,
     ).toBeGreaterThanOrEqual(1)
     expect(
-      screen.getByRole('heading', { level: 2, name: '06. Contact' }),
+      screen.getByRole('heading', {
+        level: 2,
+        name: '04. Demande du CV complet',
+      }),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(/Le site ne reçoit ni ne stocke ces champs/),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 2, name: '07. Contact' }),
     ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'me contacter' })).toHaveAttribute(
       'href',

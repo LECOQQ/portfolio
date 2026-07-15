@@ -1,5 +1,5 @@
-import { ArrowRight } from 'lucide-react'
 import { EndCta } from '@/components/end-cta'
+import { ResumeRequestDialog } from '@/features/contact/ui/resume-request-dialog'
 import { about } from '@/features/resume/application/about'
 import { AboutHeroAchievements } from '@/features/resume/ui/about-hero-achievements'
 import { AboutHeroPortrait } from '@/features/resume/ui/about-hero-portrait'
@@ -8,7 +8,6 @@ import { AboutLandmarks } from '@/features/resume/ui/about-landmarks'
 import { AboutRecentExperiences } from '@/features/resume/ui/about-recent-experiences'
 import { AboutSkillsPlayground } from '@/features/resume/ui/about-skills-playground'
 import { skillsPlayground } from '@/features/resume/application/skills-playground'
-import { resumeConfig } from '@/lib/resume-config'
 import { createPageMetadata } from '@/lib/site-config'
 
 export const metadata = createPageMetadata({
@@ -82,22 +81,9 @@ export default function AboutPage() {
               construction de produits et de nouvelles activités.
             </p>
 
-            <a
-              href={resumeConfig.href}
-              download={resumeConfig.filename}
-              data-umami-event="cv-download-click"
-              data-umami-event-location="about-recent-experiences"
-              className="group/cta font-identity text-site-accent/75 hover:text-site-accent mt-6 inline-flex w-fit items-center gap-1.5 text-sm font-medium transition-colors duration-300"
-            >
-              <span className="relative">
-                Télécharger le CV complet
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-current transition-transform duration-300 ease-out group-hover/cta:scale-x-100"
-                />
-              </span>
-              <ArrowRight aria-hidden="true" size={15} strokeWidth={2} />
-            </a>
+            <div className="mt-6">
+              <ResumeRequestDialog analyticsLocation="about-recent-experiences" />
+            </div>
           </div>
 
           <AboutRecentExperiences />

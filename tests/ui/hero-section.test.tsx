@@ -20,6 +20,16 @@ describe('HeroSection', () => {
 
     expect(screen.getByText('software eats complexity')).toBeInTheDocument()
     expect(
+      screen.getByText(
+        'Maker par goût. Software de métier. Self-hoster par principe.',
+      ),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        /Je porte aujourd’hui un projet intrapreneurial comme Product & Platform Lead, mêlant stratégie, vision et logiciel/,
+      ),
+    ).toBeInTheDocument()
+    expect(
       screen.getByRole('link', { name: /voir les projets/i }),
     ).toHaveAttribute('href', '/projects')
     expect(

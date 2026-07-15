@@ -11,7 +11,6 @@ const routes = [
   { path: '/projects/', changeFrequency: 'weekly', priority: 0.9 },
   { path: '/blog/', changeFrequency: 'weekly', priority: 0.8 },
   { path: '/contact/', changeFrequency: 'yearly', priority: 0.6 },
-  { path: '/cv', changeFrequency: 'monthly', priority: 0.7 },
   { path: '/privacy/', changeFrequency: 'yearly', priority: 0.3 },
   ...getBlogPosts().map(({ slug }) => ({
     path: `/blog/${slug}/`,
