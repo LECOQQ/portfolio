@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:22.20.0-alpine AS dependencies
+FROM node:24.18.0-alpine AS dependencies
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -10,9 +10,9 @@ ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 
 RUN apk add --no-cache bash
-RUN corepack enable && corepack prepare pnpm@10.28.0 --activate
+RUN corepack enable && corepack prepare pnpm@11.15.1 --activate
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 FROM dependencies AS build

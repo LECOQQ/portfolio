@@ -99,8 +99,8 @@ flowchart LR
 ## 🧰 Requirements
 
 - Git and Make;
-- Node.js 22, tested with `22.20.0`;
-- pnpm 10, tested with `10.28.0`;
+- Node.js 24, tested with `24.18.0`;
+- pnpm 11, tested with `11.15.1`;
 - Docker with the Compose plugin, only for previewing the production image.
 
 The expected versions are also declared in `.nvmrc`, `package.json`, and the

@@ -29,7 +29,7 @@ truth and may be overwritten by the next synchronization.
 
 ## 🧰 Local setup
 
-The project requires Node.js `22.20.0`, pnpm `10.28.0`, Git, and Make.
+The project requires Node.js `24.18.0`, pnpm `11.15.1`, Git, and Make.
 
 ```bash
 make install
