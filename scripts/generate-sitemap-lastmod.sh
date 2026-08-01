@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-repository_root="$(git rev-parse --show-toplevel 2>/dev/null)" \
-  || { echo "ERROR: Git history is required to generate sitemap lastmod values." >&2; exit 1; }
+repository_root="$(git rev-parse --show-toplevel 2> /dev/null)" \
+  || {
+    echo "ERROR: Git history is required to generate sitemap lastmod values." >&2
+    exit 1
+  }
 cd "$repository_root"
 
 readonly semantic_shared_sources=(
@@ -18,7 +21,10 @@ last_modified() {
 
   value="$(git log -1 --format=%cI -- "$@" "${semantic_shared_sources[@]}")"
   [[ -n "$value" ]] \
-    || { echo "ERROR: No Git modification date found for $*." >&2; exit 1; }
+    || {
+      echo "ERROR: No Git modification date found for $*." >&2
+      exit 1
+    }
   printf '%s' "$value"
 }
 
