@@ -1,6 +1,7 @@
 import { Mail, Rss } from 'lucide-react'
 import Link from 'next/link'
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa6'
+import { SiGitea } from 'react-icons/si'
 import { BLOG_RSS_PATH } from '@/features/blog/application/feed'
 import { siteConfig } from '@/lib/site-config'
 import { MakerWorldIcon } from '@/ui/maker-world-icon'
@@ -34,6 +35,17 @@ const footerLinks = [
     analyticsChannel: 'github',
   },
   {
+    label: 'Gitea',
+    href: siteConfig.profiles.gitea,
+    icon: SiGitea,
+    // At 18px its finer strokes (the mug handle / tea-bag string) get lost
+    // to anti-aliasing — 16px, what the hero/contact cards already use,
+    // keeps the detail legible.
+    size: 16,
+    external: true,
+    analyticsChannel: 'gitea',
+  },
+  {
     label: 'MakerWorld',
     href: siteConfig.profiles.makerWorld,
     icon: MakerWorldIcon,
@@ -44,6 +56,7 @@ const footerLinks = [
     label: 'Flux RSS',
     href: BLOG_RSS_PATH,
     icon: Rss,
+    strokeWidth: 1.7,
     external: false,
     analyticsChannel: 'rss',
     tooltip: 'Suivre les nouveaux articles par flux RSS',
@@ -54,6 +67,7 @@ const footerLinks = [
       ? `mailto:${siteConfig.contactEmail}`
       : '/contact',
     icon: Mail,
+    strokeWidth: 1.7,
     external: false,
     analyticsChannel: 'email',
   },
@@ -106,7 +120,11 @@ export function Footer() {
             {footerLinks.map((link) => {
               const Icon = link.icon
               const icon = (
-                <Icon aria-hidden="true" size={18} strokeWidth={1.7} />
+                <Icon
+                  aria-hidden="true"
+                  size={link.size ?? 18}
+                  strokeWidth={link.strokeWidth ?? 0}
+                />
               )
               const isInternalRoute = link.href.startsWith('/')
               const tooltipId = link.tooltip

@@ -33,7 +33,7 @@ export type DashboardHeroTagGroup = {
 }
 
 export type DashboardHeroContactIcon =
-  'github' | 'linkedin' | 'makerworld' | 'mail'
+  'github' | 'gitea' | 'linkedin' | 'makerworld' | 'mail'
 
 export type DashboardHeroContact = {
   icon: DashboardHeroContactIcon
@@ -124,6 +124,13 @@ export const dashboard: Dashboard = {
         href: siteConfig.profiles.github,
         external: true,
         analyticsChannel: 'github',
+      },
+      {
+        icon: 'gitea',
+        label: 'Gitea',
+        href: siteConfig.profiles.gitea,
+        external: true,
+        analyticsChannel: 'gitea',
       },
       {
         icon: 'linkedin',

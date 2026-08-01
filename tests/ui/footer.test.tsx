@@ -3,10 +3,16 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { Footer } from '@/ui/footer'
 
 describe('Footer', () => {
-  it('exposes the four contact destinations', () => {
+  it('exposes the five contact destinations', () => {
     render(<Footer />)
 
-    for (const label of ['LinkedIn', 'GitHub', 'MakerWorld', 'E-mail']) {
+    for (const label of [
+      'LinkedIn',
+      'GitHub',
+      'Gitea',
+      'MakerWorld',
+      'E-mail',
+    ]) {
       expect(screen.getByRole('link', { name: label })).toBeInTheDocument()
     }
   })
@@ -27,6 +33,7 @@ describe('Footer', () => {
     const expectedChannels: Record<string, string> = {
       LinkedIn: 'linkedin',
       GitHub: 'github',
+      Gitea: 'gitea',
       MakerWorld: 'makerworld',
       'E-mail': 'email',
     }

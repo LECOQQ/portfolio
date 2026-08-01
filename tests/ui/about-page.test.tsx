@@ -86,8 +86,7 @@ describe('AboutPage', () => {
         'Workflows modernes : développement assisté par IA, CI/CD et automatisation.',
       ),
     ).toBeInTheDocument()
-    expect(screen.getByText('Langages')).toBeInTheDocument()
-    expect(screen.getByText('Frameworks')).toBeInTheDocument()
+    expect(screen.getByText('Langage & Frameworks')).toBeInTheDocument()
     expect(screen.getByText('Workflows')).toBeInTheDocument()
     expect(within(domains).getByText('Codex')).toBeInTheDocument()
     expect(within(domains).getByText('Claude Code')).toBeInTheDocument()

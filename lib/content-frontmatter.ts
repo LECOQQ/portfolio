@@ -36,11 +36,23 @@ export const coverFocusSchema = z.object({
 
 export type CoverFocus = z.infer<typeof coverFocusSchema>
 
+/**
+ * `cover` skips the responsive-image pipeline (generate-responsive-images.mjs)
+ * and next/image's variant loader for anything that isn't a still raster
+ * format — a GIF would silently ship unresized and unbudgeted on every card
+ * that renders it. Animated assets belong in the MDX body instead, via the
+ * plain `<img>` MDX renders content through.
+ */
+const staticCoverSchema = z.string().refine((value) => !/\.gif$/i.test(value), {
+  message:
+    'La cover doit être une image statique (pas de .gif : le pipeline responsive ne la traite pas). Placez le GIF dans le corps du contenu.',
+})
+
 export const blogFrontmatterSchema = baseContentFrontmatterSchema.extend({
   publishedAt: isoDateSchema,
   tags: z.array(z.string()),
   type: blogPostTypeSchema,
-  cover: z.string().optional(),
+  cover: staticCoverSchema.optional(),
   coverAlt: z.string().min(1).optional(),
   coverFocus: coverFocusSchema.optional(),
 })
@@ -70,14 +82,10 @@ export const projectFrontmatterSchema = baseContentFrontmatterSchema.extend({
    * deriving it from recency, like the blog's featured post does. */
   spotlight: z.boolean().default(false),
   link: z.string().url().optional(),
-  cover: z.string().optional(),
+  cover: staticCoverSchema.optional(),
   coverAlt: z.string().min(1).optional(),
   coverFocus: coverFocusSchema.optional(),
 })
-
-export type LegalFrontmatter = z.infer<typeof legalFrontmatterSchema>
-export type BlogFrontmatter = z.infer<typeof blogFrontmatterSchema>
-export type ProjectFrontmatter = z.infer<typeof projectFrontmatterSchema>
 
 /**
  * Validates raw MDX frontmatter (exported by remark-mdx-frontmatter as the

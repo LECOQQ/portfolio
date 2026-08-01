@@ -2,6 +2,7 @@ import { Clock, Hammer, Mail, MapPin, Shield } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa6'
+import { SiGitea } from 'react-icons/si'
 import {
   dashboard,
   type DashboardHeroContactIcon,
@@ -35,6 +36,8 @@ function ContactIcon({ icon }: { icon: DashboardHeroContactIcon }) {
   switch (icon) {
     case 'github':
       return <FaGithub aria-hidden="true" size={16} />
+    case 'gitea':
+      return <SiGitea aria-hidden="true" size={16} />
     case 'linkedin':
       return <FaLinkedinIn aria-hidden="true" size={16} />
     case 'makerworld':

@@ -27,7 +27,13 @@ describe('DashboardHeroCard', () => {
   it('exposes the quick contact shortcuts', () => {
     render(<DashboardHeroCard />)
 
-    for (const label of ['GitHub', 'LinkedIn', 'MakerWorld', 'E-mail']) {
+    for (const label of [
+      'GitHub',
+      'Gitea',
+      'LinkedIn',
+      'MakerWorld',
+      'E-mail',
+    ]) {
       expect(screen.getByRole('link', { name: label })).toBeInTheDocument()
     }
   })
@@ -37,6 +43,7 @@ describe('DashboardHeroCard', () => {
 
     const expectedChannels: Record<string, string> = {
       GitHub: 'github',
+      Gitea: 'gitea',
       LinkedIn: 'linkedin',
       MakerWorld: 'makerworld',
       'E-mail': 'email',

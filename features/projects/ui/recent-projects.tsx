@@ -40,6 +40,9 @@ export function RecentProjects({ limit = 2 }: RecentProjectsProps) {
               rel={project.link ? 'noreferrer' : undefined}
               aria-label={project.title}
               className="absolute inset-0 z-10 rounded-xl"
+              data-umami-event={project.link ? 'project-link-click' : undefined}
+              data-umami-event-location="home-recent-projects"
+              data-umami-event-project={project.slug}
             />
 
             <div className="relative h-48 w-full overflow-hidden rounded-xl border border-white/8 bg-white/4">

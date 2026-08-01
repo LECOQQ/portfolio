@@ -31,6 +31,9 @@ export function SpotlightProject({ project }: SpotlightProjectProps) {
         rel={project.link ? 'noreferrer' : undefined}
         aria-label={`Voir le projet à la une : ${project.title}`}
         className="absolute inset-0 z-10 rounded-xl"
+        data-umami-event={project.link ? 'project-link-click' : undefined}
+        data-umami-event-location="spotlight"
+        data-umami-event-project={project.slug}
       />
 
       <div className="relative min-w-0">

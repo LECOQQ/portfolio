@@ -46,6 +46,23 @@ describe('parseFrontmatter', () => {
     expect(frontmatter.coverFocus).toEqual({ x: 55, y: 28 })
   })
 
+  it('rejects a GIF blog cover', () => {
+    expect(() =>
+      parseFrontmatter(
+        blogFrontmatterSchema,
+        {
+          title: 'Un article',
+          description: "Résumé de l'article.",
+          publishedAt: '2026-01-15',
+          tags: [],
+          type: 'article',
+          cover: '/images/blog/un-article/demo.gif',
+        },
+        'content/blog/un-article.mdx',
+      ),
+    ).toThrowError(/cover/)
+  })
+
   it('rejects cover focus coordinates outside the image bounds', () => {
     expect(() =>
       parseFrontmatter(
@@ -112,6 +129,24 @@ describe('parseFrontmatter', () => {
         'content/projects/un-projet.mdx',
       ),
     ).toThrowError(/status/)
+  })
+
+  it('rejects a GIF project cover', () => {
+    expect(() =>
+      parseFrontmatter(
+        projectFrontmatterSchema,
+        {
+          title: 'Un projet',
+          description: 'Résumé du projet.',
+          publishedAt: '2026-01-15',
+          stack: [],
+          type: 'produit',
+          status: 'in-progress',
+          cover: '/images/projects/un-projet/demo.gif',
+        },
+        'content/projects/un-projet.mdx',
+      ),
+    ).toThrowError(/cover/)
   })
 
   it('rejects an invalid project type', () => {

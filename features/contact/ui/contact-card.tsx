@@ -4,6 +4,7 @@ import { Check, Copy, Mail } from 'lucide-react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { useState } from 'react'
 import { FaGithub, FaLinkedinIn } from 'react-icons/fa6'
+import { SiGitea } from 'react-icons/si'
 import type {
   Contact,
   ContactSocial,
@@ -26,6 +27,8 @@ function SocialIcon({ icon }: { icon: ContactSocial['icon'] }) {
   switch (icon) {
     case 'github':
       return <FaGithub aria-hidden="true" size={17} />
+    case 'gitea':
+      return <SiGitea aria-hidden="true" size={17} />
     case 'linkedin':
       return <FaLinkedinIn aria-hidden="true" size={17} />
     case 'makerworld':

@@ -59,10 +59,9 @@ export const skillsPlayground: SkillsPlayground = {
       description:
         'Workflows modernes : développement assisté par IA, CI/CD et automatisation.',
       groups: [
-        { label: 'Langages', items: ['Python', 'C++'] },
         {
-          label: 'Frameworks',
-          items: ['FastAPI', 'Next.js', 'React'],
+          label: 'Langage & Frameworks',
+          items: ['Python', 'FastAPI', 'Next.js', 'React'],
         },
         { label: 'Interface & données', items: ['TailwindCSS', 'SQLModel'] },
         {

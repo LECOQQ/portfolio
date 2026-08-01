@@ -1,7 +1,7 @@
 import { siteConfig } from '@/lib/site-config'
 
 export type ContactSocial = {
-  icon: 'github' | 'linkedin' | 'makerworld'
+  icon: 'github' | 'gitea' | 'linkedin' | 'makerworld'
   label: string
   href: string
   analyticsChannel: string
@@ -40,6 +40,12 @@ export const contact: Contact = {
       label: 'GitHub',
       href: siteConfig.profiles.github,
       analyticsChannel: 'github',
+    },
+    {
+      icon: 'gitea',
+      label: 'Gitea',
+      href: siteConfig.profiles.gitea,
+      analyticsChannel: 'gitea',
     },
     {
       icon: 'linkedin',

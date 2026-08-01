@@ -16,6 +16,7 @@ export const siteConfig = {
     linkedin:
       process.env.NEXT_PUBLIC_LINKEDIN_URL || 'https://www.linkedin.com',
     github: process.env.NEXT_PUBLIC_GITHUB_URL || 'https://github.com',
+    gitea: process.env.NEXT_PUBLIC_GITEA_URL || 'https://gitea.com',
     makerWorld:
       process.env.NEXT_PUBLIC_MAKERWORLD_URL || 'https://makerworld.com',
   },
@@ -25,6 +26,7 @@ export const siteConfig = {
 export const configuredProfileUrls = [
   process.env.NEXT_PUBLIC_LINKEDIN_URL,
   process.env.NEXT_PUBLIC_GITHUB_URL,
+  process.env.NEXT_PUBLIC_GITEA_URL,
   process.env.NEXT_PUBLIC_MAKERWORLD_URL,
 ].filter((url): url is string => Boolean(url))
 

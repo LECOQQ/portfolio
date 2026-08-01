@@ -5,4 +5,6 @@ services:
     image: ${PORTFOLIO_IMAGE:-portfolio:local}
     ports:
       - '${BIND_ADDRESS:-127.0.0.1}:${DEPLOY_PORT:-3009}:80'
+    environment:
+      - UMAMI_ORIGIN=${UMAMI_ORIGIN:-https://analytics.example.com}
     restart: unless-stopped

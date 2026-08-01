@@ -19,6 +19,7 @@ FROM dependencies AS build
 
 ARG NEXT_PUBLIC_LINKEDIN_URL
 ARG NEXT_PUBLIC_GITHUB_URL
+ARG NEXT_PUBLIC_GITEA_URL
 ARG NEXT_PUBLIC_MAKERWORLD_URL
 ARG NEXT_PUBLIC_CONTACT_EMAIL
 ARG NEXT_PUBLIC_UMAMI_SCRIPT_URL
@@ -27,6 +28,7 @@ ARG SITEMAP_LASTMOD_JSON
 
 ENV NEXT_PUBLIC_LINKEDIN_URL="$NEXT_PUBLIC_LINKEDIN_URL"
 ENV NEXT_PUBLIC_GITHUB_URL="$NEXT_PUBLIC_GITHUB_URL"
+ENV NEXT_PUBLIC_GITEA_URL="$NEXT_PUBLIC_GITEA_URL"
 ENV NEXT_PUBLIC_MAKERWORLD_URL="$NEXT_PUBLIC_MAKERWORLD_URL"
 ENV NEXT_PUBLIC_CONTACT_EMAIL="$NEXT_PUBLIC_CONTACT_EMAIL"
 ENV NEXT_PUBLIC_UMAMI_SCRIPT_URL="$NEXT_PUBLIC_UMAMI_SCRIPT_URL"
@@ -42,7 +44,12 @@ RUN test -f out/favicon.ico \
 
 FROM nginx:1.31.0-alpine AS runtime
 
-COPY infra/nginx/default.conf /etc/nginx/conf.d/default.conf
+# Generic public default: the real, self-hosted Umami origin is injected at
+# container start (see infra/docker-compose.yml) via nginx's built-in
+# envsubst-on-templates entrypoint, so it never has to be hardcoded here.
+ENV UMAMI_ORIGIN=https://analytics.example.com
+
+COPY infra/nginx/default.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /app/out /usr/share/nginx/html
 
 EXPOSE 80

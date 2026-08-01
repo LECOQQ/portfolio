@@ -125,6 +125,11 @@ export function ProjectsIndex({ projects }: ProjectsIndexProps) {
                   rel={project.link ? 'noreferrer' : undefined}
                   aria-label={project.title}
                   className="absolute inset-0 z-10 rounded-[1.25rem]"
+                  data-umami-event={
+                    project.link ? 'project-link-click' : undefined
+                  }
+                  data-umami-event-location="projects-index"
+                  data-umami-event-project={project.slug}
                 />
 
                 <div className="relative flex items-baseline justify-between gap-x-4">
