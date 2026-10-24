@@ -10,9 +10,11 @@ ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 
 RUN apk add --no-cache bash
-RUN corepack enable && corepack prepare pnpm@11.15.1 --activate
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# pnpm comes from package.json's packageManager, the one place its version is
+# pinned; npm rather than corepack, which Node drops after 24.
+RUN npm install -g "$(node -p "require('./package.json').packageManager")"
 RUN pnpm install --frozen-lockfile
 
 FROM dependencies AS build

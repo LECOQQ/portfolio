@@ -99,12 +99,12 @@ flowchart LR
 ## 🧰 Requirements
 
 - Git and Make;
-- Node.js 24, tested with `24.18.0`;
-- pnpm 11, tested with `11.15.1`;
+- Node.js, at the version pinned in `.nvmrc`;
+- pnpm, at the version pinned in `package.json` (`packageManager`);
 - Docker with the Compose plugin, only for previewing the production image.
 
-The expected versions are also declared in `.nvmrc`, `package.json`, and the
-`Makefile`.
+These two files are the only places the versions are pinned: CI and the
+production image read them from there.
 
 ## 🚀 Setup
 

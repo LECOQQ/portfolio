@@ -29,7 +29,8 @@ truth and may be overwritten by the next synchronization.
 
 ## 🧰 Local setup
 
-The project requires Node.js `24.18.0`, pnpm `11.15.1`, Git, and Make.
+The project requires Node.js (version in `.nvmrc`), pnpm (version in
+`package.json`, `packageManager` field), Git, and Make.
 
 ```bash
 make install
