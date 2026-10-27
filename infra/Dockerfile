@@ -44,7 +44,7 @@ RUN test -f out/favicon.ico \
   && test -f out/robots.txt \
   && test -f out/sitemap.xml
 
-FROM nginx:1.31.0-alpine AS runtime
+FROM nginx:1.31.8-alpine AS runtime
 
 # Generic public default: the real, self-hosted Umami origin is injected at
 # container start (see infra/docker-compose.yml) via nginx's built-in
